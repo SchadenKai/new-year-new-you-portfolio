@@ -4,6 +4,28 @@ import { NextResponse } from "next/server";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
 
+// Humorous error messages for when the AI has a bad day
+const ERROR_MESSAGES = [
+  "Oops! My digital hamsters took an unscheduled coffee break. ☕ Showing you the classic layout instead!",
+  "Plot twist: The AI decided to take a nap. Don't worry, the portfolio still works great!",
+  "My brain cells are currently on vacation. 🏖️ Here's the standard view while they sunbathe.",
+  "*elevator music plays* Technical difficulties, but your journey continues!",
+  "The magic 8-ball says 'Ask again later.' In the meantime, enjoy the default layout!",
+  "Houston, we have a... tiny hiccup. Nothing a classic portfolio view can't fix!",
+  "My crystal ball is foggy today. 🔮 Falling back to the tried-and-true layout.",
+  "The AI gremlins are acting up again. Classic view to the rescue!",
+  "Beep boop... *sparks fly* ...ahem, please enjoy this lovely default layout.",
+  "The cosmic rays disrupted my circuits! Here's the portfolio in its natural form.",
+  "I tried to think too hard and got a brain freeze. 🧊 Default mode activated!",
+  "My neurons are playing hide and seek. While I find them, here's the standard layout!"
+];
+
+// Get a random error message
+const getRandomErrorMessage = () => {
+  return ERROR_MESSAGES[Math.floor(Math.random() * ERROR_MESSAGES.length)];
+};
+
+
 const context = `
 Candidate: ${profile.basics.name}
 Role: ${profile.basics.label}
@@ -51,7 +73,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ 
             layout_order: ['experience', 'projects', 'skills'], 
             highlight_ids: [], 
-            message: "API Key missing. Showing default layout." 
+            message: ERROR_MESSAGES[Math.floor(Math.random() * ERROR_MESSAGES.length)]
         });
     }
 
@@ -72,12 +94,15 @@ export async function POST(req: Request) {
     
     return NextResponse.json(JSON.parse(text));
   } catch (error) {
+    // Log the actual error for debugging (server-side only)
     console.error("AI Generation Error:", error);
-    // Fallback on error
+    
+    // Return a humorous, user-friendly error message
     return NextResponse.json({ 
         layout_order: ['experience', 'projects', 'skills'], 
         highlight_ids: [], 
-        message: "Unable to reconfigure layout. Showing default view." 
+        message: getRandomErrorMessage(),
+        isError: true  // Flag to let frontend know this was an error
     });
   }
 }

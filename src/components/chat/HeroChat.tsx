@@ -5,6 +5,25 @@ import { FaTerminal, FaRobot, FaUser, FaPaperPlane } from 'react-icons/fa6';
 import { useLayoutStore, SectionName } from '@/store/useLayoutStore';
 import TextareaAutosize from 'react-textarea-autosize';
 
+// Humorous messages for network/connection failures
+const NETWORK_ERROR_MESSAGES = [
+  "Whoops! The internet gremlins ate my signal. 📡 Try again in a sec?",
+  "My carrier pigeon got lost. 🐦 Mind giving it another go?",
+  "The Wi-Fi gods are not pleased today. But hey, the portfolio still looks great!",
+  "Connection dropped faster than my New Year's resolutions. Please retry!",
+  "*taps microphone* Is this thing on? Let's try that again.",
+  "The tubes of the internet got clogged. 🚿 One more try?",
+  "My message got stuck in traffic. 🚗 Please send again!",
+  "Looks like a squirrel chewed through the cables again. Classic squirrel.",
+  "The digital winds weren't in my favor. ⛵ Care to try once more?",
+  "Signal lost in the void! 🌌 Please retransmit.",
+];
+
+// Get a random network error message
+const getRandomNetworkError = () => {
+  return NETWORK_ERROR_MESSAGES[Math.floor(Math.random() * NETWORK_ERROR_MESSAGES.length)];
+};
+
 type Message = {
   role: 'user' | 'assistant';
   content: string;
@@ -73,14 +92,17 @@ export function HeroChat() {
                 }
             }, 1000);
         } else {
+             // Log the response for debugging but show user a friendly message
              console.error("Invalid API response", data);
              setStatus('error');
-             setMessages(prev => [...prev, { role: 'assistant', content: "System malfunction. Default layout active." }]);
+             // API might have returned an error message or use network error fallback
+             const errorMessage = data.message || getRandomNetworkError();
+             setMessages(prev => [...prev, { role: 'assistant', content: errorMessage }]);
         }
     } catch (err) {
         console.error(err);
         setStatus('error');
-        setMessages(prev => [...prev, { role: 'assistant', content: "Connection failed. Please reticulate splines." }]);
+        setMessages(prev => [...prev, { role: 'assistant', content: getRandomNetworkError() }]);
     }
   };
 
