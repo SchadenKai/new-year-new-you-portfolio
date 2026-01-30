@@ -79,6 +79,16 @@ export function HeroChat() {
         
         const data = await res.json();
         
+        // Handle rate limiting (429 status or isRateLimited flag)
+        if (res.status === 429 || data.isRateLimited) {
+            setMessages(prev => [...prev, { 
+                role: 'assistant', 
+                content: data.message || "You're chatting too fast! Please slow down."
+            }]);
+            setStatus('error');
+            return;
+        }
+        
         if (data.layout_order && Array.isArray(data.layout_order)) {
             setLayout(data.layout_order as SectionName[], data.highlight_ids || []);
             setMessages(prev => [...prev, { role: 'assistant', content: data.message || "Portfolio reconfigured." }]);
