@@ -86,11 +86,7 @@ export const metadata: Metadata = {
     images: ["/og-image.png"],
     creator: "@SchadenKai",
   },
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/favicon.ico",
-  },
+
   manifest: "/site.webmanifest",
   alternates: {
     canonical: "https://schadenkai.github.io/",
