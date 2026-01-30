@@ -29,7 +29,7 @@ export function ProjectCard({ project, isHighlighted }: ProjectProps & { isHighl
           )}
         </h3>
         {project.type && (
-          <span className="text-[10px] uppercase font-mono border-2 border-border px-2 py-1 text-foreground font-bold tracking-wider bg-secondary self-start">
+          <span className="text-[10px] uppercase font-mono border-2 border-border px-2 py-1 text-black font-bold tracking-wider bg-secondary self-start">
             {project.type}
           </span>
         )}
