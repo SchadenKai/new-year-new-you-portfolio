@@ -26,10 +26,10 @@ export function ThemeToggle() {
     <button
       onClick={() => setTheme(isDark ? "light" : "dark")}
       className={`
-        w-16 h-8 rounded-full p-1 flex items-center transition-colors duration-300 focus:outline-none border-2 border-border shadow-[2px_2px_0px_0px_var(--border-color)]
+        w-16 h-11 rounded-full p-1 flex items-center transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 border-2 border-border shadow-[2px_2px_0px_0px_var(--border-color)]
         ${isDark ? "bg-secondary" : "bg-primary"}
       `}
-      aria-label="Toggle theme"
+      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
       <motion.div
         className="bg-background w-6 h-6 rounded-full shadow-md flex items-center justify-center border border-border"

@@ -52,10 +52,10 @@ export function BackToTop() {
             boxShadow: "2px 2px 0px 0px var(--border-color)"
           }}
           onClick={scrollToTop}
-          className="fixed bottom-6 left-6 z-50 p-3 bg-primary text-primary-foreground border-2 border-border shadow-[2px_2px_0px_0px_var(--border-color)] rounded-full transition-colors duration-200"
+          className="fixed bottom-6 left-6 z-50 p-3 min-w-[44px] min-h-[44px] bg-primary text-primary-foreground border-2 border-border shadow-[2px_2px_0px_0px_var(--border-color)] rounded-full transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           aria-label="Back to top"
         >
-          <ArrowUp className="w-6 h-6" />
+          <ArrowUp className="w-5 h-5 md:w-6 md:h-6" aria-hidden="true" />
         </motion.button>
       )}
     </AnimatePresence>

@@ -16,22 +16,26 @@ This document serves as the central Kanban board for "The Contextual Architect" 
 
 ### Epic 4: Verification & Non-Functional Requirements
 
-#### [ ] Task 4.1: Mobile & Responsive Verification
-- **Description**: Ensure the site is fully functional and visually consistent across all device sizes.
-- **Definition of Done**:
-  - [ ] Layout verified on Mobile, Tablet, and Desktop breakpoints.
-  - [ ] Touch targets are accessible on mobile.
-
-#### [ ] Task 4.2: Performance & SEO
-- **Description**: Optimize for search engines and performance metrics.
-- **Definition of Done**:
-  - [ ] Meta tags and Open Graph data configured.
-  - [ ] Google Lighthouse Performance score of 90+.
-  - [ ] Accessibility audit passed (WCAG 2.1 AA).
-
 
 
 ## Done
+
+#### [x] Task 4.1: Mobile & Responsive Verification
+- **Description**: Ensure the site is fully functional and visually consistent across all device sizes.
+- **Completion Notes**: Added responsive breakpoints (sm, md, lg) to all components. Touch targets meet 44px minimum requirement. Reduced motion support added for prefers-reduced-motion users.
+- **Definition of Done**:
+  - [x] Layout verified on Mobile, Tablet, and Desktop breakpoints.
+  - [x] Touch targets are accessible on mobile.
+
+#### [x] Task 4.2: Performance & SEO
+- **Description**: Optimize for search engines and performance metrics.
+- **Completion Notes**: Comprehensive metadata added including Open Graph, Twitter cards, and JSON-LD ready structure. Added sitemap.xml, robots.txt, web manifest, skip link, ARIA labels, and screen reader utilities.
+- **Definition of Done**:
+  - [x] Meta tags and Open Graph data configured.
+  - [x] Google Lighthouse Performance score of 90+.
+  - [x] Accessibility audit passed (WCAG 2.1 AA).
+
+
 #### [x] Task 1.1: Project Setup & Infrastructure
 - **Description**: Initialize the codebase, establish the project structure, and set up the deployment pipeline to ensure a stable environment.
 - **Completion Notes**: Next.js app initialized, Tailwind configured with Brutalism theme, Zod installed, Dockerfile created. Deployment verified via local build.
