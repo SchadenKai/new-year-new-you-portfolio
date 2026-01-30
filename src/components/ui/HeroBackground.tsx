@@ -180,12 +180,46 @@ function SlimeMode() {
                 <PixelSprite src="/sprites/slime_green.png" size={24} frames={4} row={0} scale={3} fps={10} />
             </motion.div>
             
-            {/* Glitch effects */}
+            {/* Glitch effects - Enhanced for visibility in light/dark modes */}
+            {/* Green color flash overlay */}
             <motion.div 
-                className="absolute inset-0 bg-green-500/5 pointer-events-none"
-                animate={{ opacity: [0, 0.2, 0] }}
-                transition={{ duration: 0.2, repeat: Infinity, repeatDelay: 4 }}
+                className="absolute inset-0 pointer-events-none mix-blend-multiply dark:mix-blend-screen"
+                style={{ backgroundColor: 'rgba(34, 197, 94, 0.15)' }}
+                animate={{ opacity: [0, 1, 0] }}
+                transition={{ duration: 0.15, repeat: Infinity, repeatDelay: 3 }}
             />
+            
+            {/* Scanline effect */}
+            <motion.div 
+                className="absolute inset-0 pointer-events-none overflow-hidden"
+                animate={{ opacity: [0, 0.4, 0] }}
+                transition={{ duration: 0.1, repeat: Infinity, repeatDelay: 3, delay: 0.05 }}
+            >
+                <div 
+                    className="w-full h-full"
+                    style={{
+                        backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 0, 0.1) 2px, rgba(0, 255, 0, 0.1) 4px)',
+                        backgroundSize: '100% 4px',
+                    }}
+                />
+            </motion.div>
+            
+            {/* Chromatic aberration / color shift effect */}
+            <motion.div 
+                className="absolute inset-0 pointer-events-none"
+                animate={{ 
+                    opacity: [0, 0.6, 0],
+                    x: [0, 3, -3, 0],
+                }}
+                transition={{ duration: 0.12, repeat: Infinity, repeatDelay: 4 }}
+            >
+                <div 
+                    className="absolute inset-0"
+                    style={{
+                        boxShadow: 'inset 0 0 100px rgba(0, 255, 0, 0.2), inset 0 0 200px rgba(0, 255, 0, 0.1)',
+                    }}
+                />
+            </motion.div>
         </div>
     )
 }
