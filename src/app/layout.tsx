@@ -104,6 +104,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* DNS prefetch for third-party origins */}
+        <link rel="dns-prefetch" href="https://static.cloudflareinsights.com" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

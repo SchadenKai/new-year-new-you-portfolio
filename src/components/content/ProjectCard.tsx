@@ -48,8 +48,8 @@ export function ProjectCard({ project, isHighlighted }: ProjectProps & { isHighl
         <ul className="flex flex-wrap gap-1.5 md:gap-2 mt-auto pt-3 md:pt-4 border-t-2 border-border border-dashed" role="list" aria-label="Technologies used">
           {project.keywords.map((kw) => (
             <li key={kw}>
-              <span className="text-xs font-mono text-foreground font-bold bg-background border-2 border-border px-1.5 md:px-2 py-0.5 md:py-1 flex items-center gap-1 md:gap-1.5 shadow-[2px_2px_0px_0px_var(--border-color)]">
-                <TechIcon name={kw} className="w-2.5 h-2.5 md:w-3 md:h-3 text-foreground" aria-hidden="true" />
+              <span className="text-xs font-mono text-background font-bold bg-foreground border-2 border-border px-1.5 md:px-2 py-0.5 md:py-1 flex items-center gap-1 md:gap-1.5 shadow-[2px_2px_0px_0px_var(--border-color)]">
+                <TechIcon name={kw} className="w-2.5 h-2.5 md:w-3 md:h-3 text-background" aria-hidden="true" />
                 {kw}
               </span>
             </li>
