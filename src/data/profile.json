@@ -1,0 +1,225 @@
+{
+  "basics": {
+    "name": "Kairus Noah Encarnacion Tecson",
+    "label": "Senior AI Software Engineer",
+    "email": "kairustecsonpersonal@gmail.com",
+    "phone": "(+63) 976-188-3386",
+    "url": "https://schadenkai.github.io/",
+    "summary": "Senior AI Software Engineer with a background as Head of Engineering, specializing in Production RAG Systems and Multi-Agent Orchestration for Healthcare and Defense. Expert in the full AI lifecycle—from architecting ReAct and Plan-and-Execute workflows to implementing rigorous LLM evaluation pipelines using LangSmith.",
+    "location": {
+      "city": "Batangas",
+      "countryCode": "PH"
+    },
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "kairus-tecson",
+        "url": "https://www.linkedin.com/in/kairus-tecson/"
+      },
+      {
+        "network": "GitHub",
+        "username": "SchadenKai",
+        "url": "https://github.com/SchadenKai"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "ArnoldAI",
+      "position": "Head of Engineering",
+      "startDate": "2024-01",
+      "endDate": "2025-11",
+      "location": "Vienna, Austria (Remote)",
+      "summary": "Leading engineering for an AI platform providing chatbot agents, agent builder, and RAG systems for highly regulated industries.",
+      "highlights": [
+        "Architected Multi-Agent Systems (MAS) using LangGraph, implementing ReAct agents and Plan-and-Execute patterns.",
+        "Engineered high-accuracy Retrieval-Augmented Generation (RAG) pipelines for complex medical and defense protocols.",
+        "Implemented automated evaluation pipelines using LangSmith (LLM-as-a-Judge) to audit agent interactions.",
+        "Managed a team of 8, establishing Scrumban workflows and coding guidelines.",
+        "Migrated infrastructure from AWS to Hetzner bare-metal VMs using Terraform and Ansible, deploying via Kubernetes."
+      ]
+    },
+    {
+      "name": "CoolRiots",
+      "position": "Senior Software Engineer (Contract)",
+      "startDate": "2025-01",
+      "endDate": "2025-02",
+      "location": "Singapore (Remote)",
+      "summary": "Architected a 'Generative UI' system that dynamically renders interactive dashboards from natural language queries.",
+      "highlights": [
+        "Designed a Generative UI system using LLM Function Calling to render adaptive React components.",
+        "Pivoted from complex multi-agent proposal to streamlined single-agent architecture via prompt optimization.",
+        "Replaced Server-Side Rendering (SSR) overhead with client-side strategies to optimize performance."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Batangas State University - The National Engineering University",
+      "area": "Computer Science",
+      "studyType": "B.S",
+      "score": "1.6 / 1.0",
+      "courses": [
+        "Artificial Intelligence",
+        "Machine Learning",
+        "Data Science",
+        "Cloud Engineering",
+        "Software Engineering",
+        "Cybersecurity",
+        "Data Structures and Algorithm"
+      ],
+      "honors": "Dean’s Lister"
+    }
+  ],
+  "skills": [
+    {
+      "name": "AI & Machine Learning",
+      "keywords": [
+        "LangChain",
+        "LangGraph",
+        "PydanticAI",
+        "RAG Systems",
+        "LangSmith",
+        "PyTorch",
+        "OpenAI API",
+        "Scikit-learn",
+        "Pandas"
+      ]
+    },
+    {
+      "name": "Back-end Development",
+      "keywords": [
+        "Python",
+        "FastAPI",
+        "SQLAlchemy",
+        "SQLModel",
+        "Pydantic",
+        "Node.js (Express)",
+        "PHP"
+      ]
+    },
+    {
+      "name": "Front-end Development",
+      "keywords": [
+        "ReactJS",
+        "Next.js",
+        "TypeScript",
+        "TailwindCSS",
+        "Ionic",
+        "React Native"
+      ]
+    },
+    {
+      "name": "DevOps & Cloud",
+      "keywords": [
+        "Docker",
+        "Terraform",
+        "Ansible",
+        "GitHub Actions",
+        "AWS",
+        "Google Cloud",
+        "Azure",
+        "Hetzner",
+        "Traefik",
+        "Kubernetes"
+      ]
+    },
+    {
+      "name": "Database",
+      "keywords": [
+        "Firestore",
+        "PostgreSQL",
+        "Supabase",
+        "MySQL"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Dynamic UI: Generative AI Component Rendering",
+      "description": "Designed a 'Generative UI' Proof-of-Concept that utilizes LLM Function Calling to dynamically generate structured JSON payloads, rendering adaptive React components.",
+      "highlights": [
+        "Utilized LLM Function Calling for dynamic structured JSON generation.",
+        "Rendered adaptive React components (charts, forms, tables) based on natural language."
+      ],
+      "keywords": ["FastAPI", "OpenAI API", "Pydantic AI", "Next.js", "TypeScript"],
+      "type": "Concept"
+    },
+    {
+      "name": "Bath and Bark",
+      "description": "E-commerce Management System.",
+      "highlights": [
+        "Engineered a serverless backend using FastAPI, SQLModel, and Pydantic.",
+        "Built full inventory and appointment management system with Swagger API documentation."
+      ],
+      "keywords": ["FastAPI", "SQLModel", "Pydantic", "Vercel"],
+      "type": "Commission"
+    },
+    {
+      "name": "Trashbox-ARD",
+      "description": "Robust Computer Vision Model.",
+      "highlights": [
+        "Developed solid waste image classification model robust against adversarial attacks.",
+        "Engineered for space and time efficiency using Knowledge Distillation."
+      ],
+      "keywords": ["Python", "PyTorch", "Computer Vision", "Adversarial Training"],
+      "type": "Research/Project"
+    },
+    {
+      "name": "Artemis",
+      "description": "Smart Waste Management System.",
+      "highlights": [
+        "Built an IoT-connected waste tracking system with Express.js and Firebase backend.",
+        "Implemented real-time monitoring via Firestore and automated CRON tasks."
+      ],
+      "keywords": ["Express.js", "Firebase", "IoT", "Firestore"],
+      "type": "College Project"
+    },
+    {
+      "name": "Clinical-RAG",
+      "description": "Production-grade, citation-backed AI system designed to bridge the 'Trust Gap' in medical information retrieval.",
+      "highlights": [
+        "Orchestration: LangGraph for stateful, multi-agent workflows.",
+        "Vector Infrastructure: Milvus for high-concurrency similarity search.",
+        "Deployed on AWS (ECS Fargate) with CI/CD via GitHub Actions."
+      ],
+      "keywords": ["LangGraph", "Milvus", "Docker", "AWS", "GitHub Actions", "Python", "Pytest"],
+      "type": "Open Source",
+      "url": "https://github.com/SchadenKai/Clinical-RAG"
+    },
+    {
+      "name": "chat-man",
+      "description": "Experimental playground for agentic LM chat workflows and real-time API integrations.",
+      "highlights": [
+        "Exploration of different real-time API communications.",
+        "Prototyping of agentic workflows using Jupyter Notebooks."
+      ],
+      "keywords": ["Jupyter Notebook", "Python", "Agentic Workflows"],
+      "type": "Pet Project",
+      "url": "https://github.com/SchadenKai/chat-man"
+    }
+  ],
+  "achievements": [
+    {
+      "title": "Champion",
+      "event": "iSITE x Stackleague Programming Competition",
+      "date": "2023-03",
+      "location": "Laguna, Philippines",
+      "summary": "Ranked 1st among 124 students, solving complex programming challenges with PHP."
+    },
+    {
+      "title": "2nd Runner Up",
+      "event": "ISEAC Hackathon - UPOU",
+      "date": "2023-08",
+      "location": "Laguna, Philippines",
+      "summary": "Proposed an AI-powered proctoring system for VR examinations. Theme: 'Intersection of AI and Education'."
+    },
+    {
+      "title": "3rd Runner Up",
+      "event": "Kadakareer x HelpBridge: Business Challenge Hackathon",
+      "date": "2023-03",
+      "location": "Online",
+      "summary": "Delivered a business strategy for a Hong Kong startup, creating high-fidelity wireframes."
+    }
+  ]
+}

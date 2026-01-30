@@ -1,0 +1,45 @@
+:root {
+    --background: #ffffff;
+    --foreground: #000000;
+    --surface: #ffffff;
+    --primary: #8B5CF6;
+    /* Vibrant Purple */
+    --secondary: #FFD600;
+    /* Vibrant Yellow */
+    --accent: #FF6B6B;
+    /* Vibrant Red/Pink */
+    --border-color: #000000;
+    --muted-foreground: #666666;
+
+    --shadow-neo: 4px 4px 0px 0px #000000;
+    --border-width-neo: 2px;
+    --radius-neo: 0.5rem;
+}
+
+.dark {
+    --background: #000000;
+    --foreground: #ffffff;
+    --surface: #1a1a1a;
+    --border-color: #ffffff;
+    --muted-foreground: #d4d4d4;
+    --shadow-neo: 4px 4px 0px 0px #ffffff;
+}
+
+@theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-surface: var(--surface);
+    --color-primary: var(--primary);
+    --color-secondary: var(--secondary);
+    --color-accent: var(--accent);
+    --color-accent: var(--accent);
+    --color-border: var(--border-color);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --shadow-neo: var(--shadow-neo);
+    --border-width-neo: var(--border-width-neo);
+    --radius-neo: var(--radius-neo);
+
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
+}
