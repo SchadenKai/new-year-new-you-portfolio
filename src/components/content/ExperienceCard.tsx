@@ -21,7 +21,7 @@ export function ExperienceCard({ work, isHighlighted }: ExperienceProps & { isHi
         </time>
       </header>
       
-      <div className="text-base md:text-lg font-mono text-primary mb-3 md:mb-4 pl-3 md:pl-4 font-black">@{work.name}</div>
+      <div className="text-base md:text-lg font-mono text-primary-text mb-3 md:mb-4 pl-3 md:pl-4 font-black">@{work.name}</div>
       
       {work.summary && (
         <p className="mb-3 md:mb-4 text-muted-foreground pl-3 md:pl-4 leading-relaxed font-medium text-sm md:text-base">{work.summary}</p>
