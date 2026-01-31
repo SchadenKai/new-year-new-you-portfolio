@@ -253,7 +253,6 @@ export async function POST(req: Request) {
             'X-RateLimit-Limit-Day': RATE_LIMIT.REQUESTS_PER_DAY.toString(),
             'X-RateLimit-Remaining-Minute': '0',
             'X-RateLimit-Remaining-Day': rateLimitResult.remaining?.day.toString() || '0',
-            'X-RateLimit-Remaining-Day': rateLimitResult.remaining?.day.toString() || '0',
             'X-RateLimit-Reset': resetInSeconds.toString(),
             'Retry-After': resetInSeconds.toString(),
           }
@@ -280,6 +279,7 @@ export async function POST(req: Request) {
     const model = vertexAI.getGenerativeModel({ 
         model: "gemini-2.5-flash",
         systemInstruction: {
+            role: 'system',
             parts: [{ text: instructions }]
         },
         generationConfig: {
