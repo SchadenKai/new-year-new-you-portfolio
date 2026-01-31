@@ -2,8 +2,8 @@ import { ImageResponse } from 'next/og'
 
 // Image metadata
 export const size = {
-  width: 192,
-  height: 192,
+  width: 180,
+  height: 180,
 }
 export const contentType = 'image/png'
 
@@ -14,7 +14,7 @@ export default function Icon() {
       // ImageResponse JSX element
       <div
         style={{
-          fontSize: 120,
+          fontSize: 112, // Scaled for 180px
           background: 'black',
           width: '100%',
           height: '100%',
@@ -23,8 +23,9 @@ export default function Icon() {
           justifyContent: 'center',
           color: 'white',
           fontWeight: 900,
-          borderRadius: '24px', // Scaled rounded corners (4 * 6)
-          border: '6px solid white', // Scaled border (1 * 6)
+          borderRadius: '32px', // Apple icons usually have their own rounding, but providing a square or slightly rounded one is fine. Apple applies a mask.
+          // However, keeping it consistent with the main icon.
+          border: '6px solid white',
         }}
       >
         K
