@@ -1,9 +1,15 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { VertexAI, HarmCategory, HarmBlockThreshold } from "@google-cloud/vertexai";
 import { profile } from "@/lib/profile";
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
+// Initialize Vertex AI
+// Note: Requires GOOGLE_APPLICATION_CREDENTIALS to be set in environment
+// or running in an environment with default credentials (like Cloud Run)
+const project = process.env.GOOGLE_CLOUD_PROJECT_ID;
+const location = process.env.GOOGLE_CLOUD_LOCATION || 'us-central1';
+
+const vertexAI = project ? new VertexAI({ project, location }) : null;
 
 // ============================================================================
 // RATE LIMITING CONFIGURATION
@@ -247,6 +253,7 @@ export async function POST(req: Request) {
             'X-RateLimit-Limit-Day': RATE_LIMIT.REQUESTS_PER_DAY.toString(),
             'X-RateLimit-Remaining-Minute': '0',
             'X-RateLimit-Remaining-Day': rateLimitResult.remaining?.day.toString() || '0',
+            'X-RateLimit-Remaining-Day': rateLimitResult.remaining?.day.toString() || '0',
             'X-RateLimit-Reset': resetInSeconds.toString(),
             'Retry-After': resetInSeconds.toString(),
           }
@@ -259,9 +266,9 @@ export async function POST(req: Request) {
     // ========================================================================
     const { message, history } = await req.json();
 
-    if (!process.env.GOOGLE_API_KEY) {
+    if (!vertexAI) {
         // Fallback for demo/no-key environment
-        console.warn("GOOGLE_API_KEY not set. Using default layout.");
+        console.warn("GOOGLE_CLOUD_PROJECT_ID not set. Using default layout.");
         return NextResponse.json({ 
             layout_order: ['experience', 'projects', 'skills'], 
             highlight_ids: [], 
@@ -270,9 +277,11 @@ export async function POST(req: Request) {
         });
     }
 
-    const model = genAI.getGenerativeModel({ 
+    const model = vertexAI.getGenerativeModel({ 
         model: "gemini-2.5-flash",
-        systemInstruction: instructions,
+        systemInstruction: {
+            parts: [{ text: instructions }]
+        },
         generationConfig: {
             responseMimeType: "application/json"
         }
@@ -283,10 +292,27 @@ export async function POST(req: Request) {
 
     const result = await model.generateContent(fullPrompt);
     const response = await result.response;
-    const text = response.text();
+    // Vertex AI SDK response structure might slightly differ, safe access
+    const text = response.candidates?.[0]?.content?.parts?.[0]?.text;
+    
+    if (!text) {
+        throw new Error("No content generated from Vertex AI");
+    }
     
     // Include rate limit info in successful response
-    const parsedResponse = JSON.parse(text);
+    let parsedResponse;
+    try {
+        parsedResponse = JSON.parse(text);
+    } catch (e) {
+        console.error("Failed to parse JSON response:", text);
+        // Fallback if model doesn't return valid JSON
+        parsedResponse = {
+            layout_order: ['experience', 'projects', 'skills'],
+            highlight_ids: [],
+            message: text // Return the raw text as message if it's not JSON
+        };
+    }
+
     return NextResponse.json({
       ...parsedResponse,
       rateLimit: rateLimitResult.remaining,

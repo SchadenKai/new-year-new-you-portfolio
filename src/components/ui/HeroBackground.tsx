@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 
 export function HeroBackground() {
   const [isIdle, setIsIdle] = React.useState(false);
@@ -34,7 +34,7 @@ export function HeroBackground() {
   return (
     <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none bg-background">
       {/* Moving Grid - formatted for light mode */}
-      <motion.div 
+      <m.div 
         className="absolute inset-0 z-0 opacity-10"
         initial={{ backgroundPosition: "0px 0px" }}
         animate={{ backgroundPosition: "50px 50px" }}
@@ -51,7 +51,7 @@ export function HeroBackground() {
       
       {/* Floating Geometric Shapes */}
       {/* Top Left - Purple Circle */}
-      <motion.div 
+      <m.div 
         animate={{ 
             y: [0, -20, 0],
             rotate: [0, 10, 0]
@@ -62,7 +62,7 @@ export function HeroBackground() {
       />
 
       {/* Bottom Right - Yellow Square */}
-      <motion.div 
+      <m.div 
         animate={{ 
             y: [0, 30, 0],
             rotate: [0, -10, 0]
@@ -73,7 +73,7 @@ export function HeroBackground() {
       />
       
       {/* Center/Random - Accent Triangle/Shape */}
-      <motion.div 
+      <m.div 
         animate={{ 
             y: [0, -15, 0],
             x: [0, 10, 0]
@@ -100,8 +100,6 @@ export function HeroBackground() {
   );
 }
 
-// ... (previous code)
-
 function EasterEggContainer() {
   const [mode, setMode] = React.useState(1);
 
@@ -110,7 +108,7 @@ function EasterEggContainer() {
   }, []);
 
   return (
-    <motion.div
+    <m.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -128,7 +126,7 @@ function EasterEggContainer() {
               <span>SYSTEM_IDLE: MODE_0{mode}</span>
            </div>
         </div>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -169,7 +167,7 @@ function PixelSprite(props: any) {
 function SlimeMode() {
     return (
         <div className="relative w-full h-full">
-            <motion.div 
+            <m.div 
                 className="absolute bottom-10 left-1/2 -translate-x-1/2"
                 animate={{ 
                     x: ["30%", "60%", "35%", "80%"],
@@ -178,11 +176,11 @@ function SlimeMode() {
             >
                 {/* Increased FPS for smoother hopping. Size fixed to 24 for 96x72 sprites  */}
                 <PixelSprite src="/sprites/slime_green.png" size={24} frames={4} row={0} scale={3} fps={10} />
-            </motion.div>
+            </m.div>
             
             {/* Glitch effects - Enhanced for visibility in light/dark modes */}
             {/* Green color flash overlay */}
-            <motion.div 
+            <m.div 
                 className="absolute inset-0 pointer-events-none mix-blend-multiply dark:mix-blend-screen"
                 style={{ backgroundColor: 'rgba(34, 197, 94, 0.15)' }}
                 animate={{ opacity: [0, 1, 0] }}
@@ -190,7 +188,7 @@ function SlimeMode() {
             />
             
             {/* Scanline effect */}
-            <motion.div 
+            <m.div 
                 className="absolute inset-0 pointer-events-none overflow-hidden"
                 animate={{ opacity: [0, 0.4, 0] }}
                 transition={{ duration: 0.1, repeat: Infinity, repeatDelay: 3, delay: 0.05 }}
@@ -202,10 +200,10 @@ function SlimeMode() {
                         backgroundSize: '100% 4px',
                     }}
                 />
-            </motion.div>
+            </m.div>
             
             {/* Chromatic aberration / color shift effect */}
-            <motion.div 
+            <m.div 
                 className="absolute inset-0 pointer-events-none"
                 animate={{ 
                     opacity: [0, 0.6, 0],
@@ -219,7 +217,7 @@ function SlimeMode() {
                         boxShadow: 'inset 0 0 100px rgba(0, 255, 0, 0.2), inset 0 0 200px rgba(0, 255, 0, 0.1)',
                     }}
                 />
-            </motion.div>
+            </m.div>
         </div>
     )
 }
@@ -229,7 +227,7 @@ function InvasionMode() {
     return (
         <div className="relative w-full h-full">
              {[...Array(8)].map((_, i) => (
-                 <motion.div
+                 <m.div
                     key={i}
                     className="absolute top-10"
                     style={{ left: `${10 + i * 10}%` }}
@@ -238,7 +236,7 @@ function InvasionMode() {
                  >
                      {/* Purple slime: 96x72 -> 4 frames of 24x24, 3 rows */}
                      <PixelSprite src="/sprites/coin.png" size={16} frames={4} row={0} scale={2} fps={10} />
-                 </motion.div>
+                 </m.div>
              ))}
              {/* Use Knight as defender? */}
              <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
@@ -252,7 +250,7 @@ function InvasionMode() {
 function KnightMode() {
     return (
         <div className="relative w-full h-full flex items-end pb-10">
-             <motion.div
+             <m.div
                 className="absolute"
                 animate={{ x: ["-10vw", "110vw"] }}
                 // Faster movement to match running
@@ -260,7 +258,7 @@ function KnightMode() {
              >
                   {/* Row 2 is Run. Row 1 was the label. */}
                   <PixelSprite src="/sprites/knight.png" size={32} frames={8} row={2} scale={4} fps={14} />
-             </motion.div>
+             </m.div>
         </div>
     )
 }
@@ -269,7 +267,7 @@ function KnightMode() {
 function CoinMode() {
     return (
         <div className="relative w-full h-full">
-            <motion.div
+            <m.div
                 className="absolute"
                 animate={{ 
                     x: ["0vw", "90vw", "0vw"],
@@ -279,7 +277,7 @@ function CoinMode() {
             >
                 {/* Coin usually single row animation */}
                 <PixelSprite src="/sprites/coin.png" size={16} frames={4} row={0} scale={6} fps={10} />
-            </motion.div>
+            </m.div>
         </div>
     )
 }

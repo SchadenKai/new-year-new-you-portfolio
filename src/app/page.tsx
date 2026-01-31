@@ -1,19 +1,9 @@
 import dynamic from 'next/dynamic';
+import { HeroChat } from '@/components/chat/HeroChat';
+import { LiquidHero } from '@/components/ui/LiquidHero';
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { profile } from "@/lib/profile";
-
-// Dynamic imports for code splitting - reduces initial bundle size
-const HeroChat = dynamic(
-  () => import('@/components/chat/HeroChat').then(m => ({ default: m.HeroChat })),
-  { 
-    loading: () => (
-      <div className="w-full max-w-2xl mx-auto p-4 animate-pulse">
-        <div className="h-64 bg-surface border-2 border-border rounded-lg" />
-      </div>
-    )
-  }
-);
 
 const DynamicPortfolio = dynamic(
   () => import('@/components/content/DynamicPortfolio').then(m => ({ default: m.DynamicPortfolio })),
@@ -25,10 +15,6 @@ const DynamicPortfolio = dynamic(
       </div>
     )
   }
-);
-
-const LiquidHero = dynamic(
-  () => import('@/components/ui/LiquidHero').then(m => ({ default: m.LiquidHero }))
 );
 
 export default function Home() {

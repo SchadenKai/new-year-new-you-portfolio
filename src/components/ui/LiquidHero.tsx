@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { m, LazyMotion, domAnimation, useScroll, useTransform, useSpring } from 'framer-motion';
 import { HeroBackground } from './HeroBackground';
 
 interface LiquidHeroProps {
@@ -10,13 +10,9 @@ interface LiquidHeroProps {
 
 export function LiquidHero({ children }: LiquidHeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  // useScroll and other hooks still work as usual
   const { scrollY } = useScroll();
 
-  // Map scroll position to border radius for the liquid effect
-  // 0 to 500px scroll -> 0 to 100px radius curve?
-  // User asked for "liquid dropped up when scrolled down"
-  // This implies the bottom edge curves as it goes up.
-  
   // Create a spring for smooth mapping
   const smoothScrollY = useSpring(scrollY, {
     stiffness: 100,
@@ -30,24 +26,25 @@ export function LiquidHero({ children }: LiquidHeroProps) {
   const y = useTransform(smoothScrollY, [0, 800], [0, 100]); // Parallax lag
 
   return (
-    <motion.section 
-      ref={containerRef}
-      className="h-screen w-full relative flex items-center justify-center shrink-0 overflow-hidden border-b-2 border-border bg-background"
-      style={{ 
-        borderBottomLeftRadius: borderBottomRadius,
-        borderBottomRightRadius: borderBottomRadius,
-        scale,
-        // zIndex: 10 
-      }}
-    >
-      <HeroBackground />
-      
-      <motion.div 
-        className="w-full z-10 relative"
-        style={{ opacity, y }}
+    <LazyMotion features={domAnimation}>
+      <m.section 
+        ref={containerRef}
+        className="h-screen w-full relative flex items-center justify-center shrink-0 overflow-hidden border-b-2 border-border bg-background"
+        style={{ 
+          borderBottomLeftRadius: borderBottomRadius,
+          borderBottomRightRadius: borderBottomRadius,
+          scale,
+        }}
       >
-        {children}
-      </motion.div>
-    </motion.section>
+        <HeroBackground />
+        
+        <m.div 
+          className="w-full z-10 relative"
+          style={{ opacity, y }}
+        >
+          {children}
+        </m.div>
+      </m.section>
+    </LazyMotion>
   );
 }
