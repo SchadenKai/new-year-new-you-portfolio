@@ -28,6 +28,8 @@ export const ProfileSchema = z.object({
     summary: z.string().optional(),
     highlights: z.array(z.string()),
     location: z.string().optional(),
+    skills: z.array(z.string()).optional(),
+    logo: z.string().optional(),
   })),
   education: z.array(z.object({
     institution: z.string(),
@@ -61,6 +63,7 @@ export const ProfileSchema = z.object({
     date: z.string(),
     summary: z.string(),
     location: z.string().optional(),
+    image: z.string().optional(),
   })).optional(),
 });
 

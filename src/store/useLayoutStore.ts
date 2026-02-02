@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type SectionName = 'experience' | 'projects' | 'skills';
+export type SectionName = 'experience' | 'projects' | 'skills' | 'achievements' | 'posts';
 
 interface LayoutState {
   layoutOrder: SectionName[];
@@ -11,7 +11,7 @@ interface LayoutState {
 }
 
 export const useLayoutStore = create<LayoutState>((set) => ({
-  layoutOrder: ['experience', 'projects', 'skills'],
+  layoutOrder: ['experience', 'projects', 'skills', 'achievements', 'posts'],
   highlightIds: [],
   isConfigured: false,
   setLayout: (order, highlights) => set({ 
@@ -20,7 +20,7 @@ export const useLayoutStore = create<LayoutState>((set) => ({
       isConfigured: true 
   }),
   resetLayout: () => set({ 
-      layoutOrder: ['experience', 'projects', 'skills'], 
+      layoutOrder: ['experience', 'projects', 'skills', 'achievements', 'posts'], 
       highlightIds: [], 
       isConfigured: false 
   }),

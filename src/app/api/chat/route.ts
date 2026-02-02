@@ -239,7 +239,7 @@ export async function POST(req: Request) {
       // Return 429 Too Many Requests with a humorous message
       return NextResponse.json(
         { 
-          layout_order: ['experience', 'projects', 'skills'], 
+          layout_order: ['experience', 'projects', 'skills', 'achievements', 'posts'], 
           highlight_ids: [], 
           message,
           isRateLimited: true,
@@ -269,7 +269,7 @@ export async function POST(req: Request) {
         // Fallback for demo/no-key environment
         console.warn("GOOGLE_CLOUD_PROJECT_ID not set. Using default layout.");
         return NextResponse.json({ 
-            layout_order: ['experience', 'projects', 'skills'], 
+            layout_order: ['experience', 'projects', 'skills', 'achievements', 'posts'], 
             highlight_ids: [], 
             message: ERROR_MESSAGES[Math.floor(Math.random() * ERROR_MESSAGES.length)],
             rateLimit: rateLimitResult.remaining,
@@ -303,11 +303,20 @@ export async function POST(req: Request) {
     let parsedResponse;
     try {
         parsedResponse = JSON.parse(text);
+        
+        // Force achievements and posts to be at the end
+        if (parsedResponse.layout_order) {
+            const fixedSections = ['achievements', 'posts'];
+            // Filter out fixed sections if AI included them (to avoid duplicates)
+            const dynamicSections = parsedResponse.layout_order.filter((s: string) => !fixedSections.includes(s));
+            // Append fixed sections at the end
+            parsedResponse.layout_order = [...dynamicSections, ...fixedSections];
+        }
     } catch (e) {
         console.error("Failed to parse JSON response:", text);
         // Fallback if model doesn't return valid JSON
         parsedResponse = {
-            layout_order: ['experience', 'projects', 'skills'],
+            layout_order: ['experience', 'projects', 'skills', 'achievements', 'posts'],
             highlight_ids: [],
             message: text // Return the raw text as message if it's not JSON
         };
@@ -330,7 +339,7 @@ export async function POST(req: Request) {
     
     // Return a humorous, user-friendly error message
     return NextResponse.json({ 
-        layout_order: ['experience', 'projects', 'skills'], 
+        layout_order: ['experience', 'projects', 'skills', 'achievements', 'posts'], 
         highlight_ids: [], 
         message: getRandomErrorMessage(),
         isError: true  // Flag to let frontend know this was an error

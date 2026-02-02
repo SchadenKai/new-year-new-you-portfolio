@@ -37,11 +37,18 @@
         "Implemented automated evaluation pipelines using LangSmith (LLM-as-a-Judge) to audit agent interactions.",
         "Managed a team of 8, establishing Scrumban workflows and coding guidelines.",
         "Migrated infrastructure from AWS to Hetzner bare-metal VMs using Terraform and Ansible, deploying via Kubernetes."
-      ]
+      ],
+      "skills": [
+        "Next.js", "React", "FastAPI", "SQLAlchemy", "PostgreSQL", "Docker", "AWS", "Azure", "GitHub", 
+        "Git", "Github Actions", "Linux", "Beautiful Soup", "OpenAI", "Pandas", "Stripe", "Supabase", 
+        "Wordpress", "Schadcn UI", "Nginx", "Figma", "PydanticAI", "Langchain", "LiteLLM", "Traefik", 
+        "Expo", "Hetzner"
+      ],
+      "logo": "/company_logo/arnoldai_new_logo.png"
     },
     {
       "name": "CoolRiots",
-      "position": "Senior Software Engineer (Contract)",
+      "position": "Software Engineer (Contract)",
       "startDate": "2025-01",
       "endDate": "2025-02",
       "location": "Singapore (Remote)",
@@ -50,7 +57,9 @@
         "Designed a Generative UI system using LLM Function Calling to render adaptive React components.",
         "Pivoted from complex multi-agent proposal to streamlined single-agent architecture via prompt optimization.",
         "Replaced Server-Side Rendering (SSR) overhead with client-side strategies to optimize performance."
-      ]
+      ],
+      "skills": ["FastAPI", "SQLAlchemy", "PostgreSQL", "OpenAI", "React", "PydanticAI"],
+      "logo": "/company_logo/coolriots_logo.jpg"
     }
   ],
   "education": [
@@ -205,6 +214,7 @@
       "event": "iSITE x Stackleague Programming Competition",
       "date": "2023-03",
       "location": "Laguna, Philippines",
+      "image": "/awards/stackleague-competition.jpg",
       "summary": "Ranked 1st among 124 students, solving complex programming challenges with PHP."
     },
     {
@@ -212,6 +222,7 @@
       "event": "ISEAC Hackathon - UPOU",
       "date": "2023-08",
       "location": "Laguna, Philippines",
+      "image": "/awards/ISEACHackathon2.jpg",
       "summary": "Proposed an AI-powered proctoring system for VR examinations. Theme: 'Intersection of AI and Education'."
     },
     {
@@ -219,7 +230,40 @@
       "event": "Kadakareer x HelpBridge: Business Challenge Hackathon",
       "date": "2023-03",
       "location": "Online",
+      "image": "/awards/kadakareer.jpg",
       "summary": "Delivered a business strategy for a Hong Kong startup, creating high-fidelity wireframes."
+    },
+    {
+      "title": "Presentor",
+      "event": "ASCENT'24 - The Annual Student Conference for Engineering and Technology",
+      "date": "2024",
+      "location": "Online",
+      "image": "/awards/ascent-24.jpg",
+      "summary": "The conference involves presentation of thesis that excels amongst their respective colleges, especially studies that involves targetting SDG's / Sustainable Development Goals."
+    },
+    {
+      "title": "Resource Speaker",
+      "event": "Seminar: Beyond the Hype - The Real World of Generative AI and Language Models",
+      "date": "2025",
+      "location": "Batangas State University - Alangilan Campus",
+      "image": "/awards/seminar_1.jpg",
+      "summary": "The main objective is to introduce Generative AI and Language Models to Computer Engineering students. This includes definition of what Generative AI and Language Models, technical overview of how it works, its history, technical concepts, and its real-world applications. The seminar also includes live coding session on how to use different capabilities of Language models through Langchain, from basic calling of LLM's to Agents."
+    },
+    {
+      "title": "Participant",
+      "event": "iSITE National Programming Competition",
+      "date": "2023",
+      "location": "Virtual",
+      "image": "/awards/isite-nationals.jpg",
+      "summary": "The competition focuses on problem solving in data structures and algorithms in which I competed for the C++ category."
+    },
+    {
+      "title": "Participant",
+      "event": "Hackada : Kadakareer x Home Credit Business Challenge Hackathon",
+      "date": "2023",
+      "location": "Virtual",
+      "image": "/awards/homeCreditHackadaCertificate.png",
+      "summary": "Creating a product positioning for Home Credit's new mobile application. This involved learning marketing strategies and solution, and creating a marketing plan."
     }
   ]
 }
