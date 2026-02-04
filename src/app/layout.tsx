@@ -24,7 +24,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://schadenkai.github.io"),
+  metadataBase: new URL("https://schadenkai.space"),
   title: {
     default: "Kairus Noah Tecson | Senior AI Software Engineer",
     template: "%s | Kairus Noah Tecson",
@@ -46,6 +46,7 @@ export const metadata: Metadata = {
     "Healthcare AI",
     "DevOps",
     "Cloud Engineering",
+    "Kairus Noah Tecson",
   ],
   authors: [{ name: "Kairus Noah Tecson", url: "https://github.com/SchadenKai" }],
   creator: "Kairus Noah Tecson",
@@ -64,8 +65,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://schadenkai.github.io/",
-    siteName: "Kairus Noah Tecson Portfolio",
+    url: "https://schadenkai.space/",
+    siteName: "Kairus Noah Tecson",
     title: "Kairus Noah Tecson | Senior AI Software Engineer",
     description:
       "Senior AI Software Engineer specializing in Production RAG Systems and Multi-Agent Orchestration. Building intelligent systems for Healthcare and Defense.",
@@ -89,7 +90,7 @@ export const metadata: Metadata = {
 
   manifest: "/site.webmanifest",
   alternates: {
-    canonical: "https://schadenkai.github.io/",
+    canonical: "https://schadenkai.space/",
   },
 };
 
@@ -107,6 +108,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Kairus Noah Tecson",
+              url: "https://schadenkai.space",
+              alternateName: ["Kairus Noah Tecson Portfolio", "KNT Portfolio"],
+            }),
+          }}
+        />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
