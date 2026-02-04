@@ -65,6 +65,7 @@ export const ProfileSchema = z.object({
     location: z.string().optional(),
     image: z.string().optional(),
   })).optional(),
+  tiktok: z.array(z.string()).optional(),
 });
 
 export type Profile = z.infer<typeof ProfileSchema>;
