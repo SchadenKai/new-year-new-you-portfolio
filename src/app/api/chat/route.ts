@@ -269,7 +269,7 @@ export async function POST(req: Request) {
         // Fallback for demo/no-key environment
         console.warn("GOOGLE_CLOUD_PROJECT_ID not set. Using default layout.");
         return NextResponse.json({ 
-            layout_order: ['experience', 'projects', 'skills', 'achievements', 'posts'], 
+            layout_order: ['about', 'experience', 'projects', 'skills', 'achievements', 'writings'], 
             highlight_ids: [], 
             message: ERROR_MESSAGES[Math.floor(Math.random() * ERROR_MESSAGES.length)],
             rateLimit: rateLimitResult.remaining,
@@ -304,19 +304,22 @@ export async function POST(req: Request) {
     try {
         parsedResponse = JSON.parse(text);
         
-        // Force achievements and posts to be at the end
+        // Force achievements and writings to be at the end, and about to be at the start if not present
         if (parsedResponse.layout_order) {
-            const fixedSections = ['achievements', 'posts'];
+            const fixedAtEnd = ['achievements', 'writings'];
+            const fixedAtStart = ['about'];
+            
             // Filter out fixed sections if AI included them (to avoid duplicates)
-            const dynamicSections = parsedResponse.layout_order.filter((s: string) => !fixedSections.includes(s));
-            // Append fixed sections at the end
-            parsedResponse.layout_order = [...dynamicSections, ...fixedSections];
+            const dynamicSections = parsedResponse.layout_order.filter((s: string) => !fixedAtEnd.includes(s) && !fixedAtStart.includes(s));
+            
+            // Construct final order: About -> Dynamic (Experience/Projects/Skills) -> Fixed End (Achievements/Writings)
+            parsedResponse.layout_order = [...fixedAtStart, ...dynamicSections, ...fixedAtEnd];
         }
     } catch (e) {
         console.error("Failed to parse JSON response:", text);
         // Fallback if model doesn't return valid JSON
         parsedResponse = {
-            layout_order: ['experience', 'projects', 'skills', 'achievements', 'posts'],
+            layout_order: ['about', 'experience', 'projects', 'skills', 'achievements', 'writings'],
             highlight_ids: [],
             message: text // Return the raw text as message if it's not JSON
         };

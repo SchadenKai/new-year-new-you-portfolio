@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 
 interface GithubStatsProps {
   username: string;
+  variant?: 'default' | 'minimal';
 }
 
 interface AsyncStatsImageProps {
@@ -20,7 +21,7 @@ function AsyncStatsImage({ src, alt, className = "", displayBlock = false }: Asy
   const [error, setError] = useState(false);
 
   return (
-    <div className={`relative w-full ${displayBlock ? 'block' : 'flex items-center justify-center'} min-h-[100px] ${className}`}>
+    <div className={`relative w-full ${displayBlock ? 'block' : 'flex items-center justify-center'} min-h-[50px] ${className}`}>
         {isLoading && (
             <div className="absolute inset-0 bg-gray-200 dark:bg-gray-800 animate-pulse rounded-sm" />
         )}
@@ -37,19 +38,12 @@ function AsyncStatsImage({ src, alt, className = "", displayBlock = false }: Asy
                 }}
                 className={`transition-opacity duration-500 w-full h-auto object-contain ${isLoading ? 'opacity-0 absolute' : 'opacity-100 relative'}`}
             />
-        ) : (
-            <div className="flex flex-col items-center justify-center p-6 text-center border-2 border-dashed border-border w-full h-full min-h-[150px]">
-                <span className="text-4xl mb-2">👾</span>
-                <p className="text-sm font-mono text-muted-foreground">
-                    Failed to load {alt}
-                </p>
-            </div>
-        )}
+        ) : null}
     </div>
   );
 }
 
-export function GithubStats({ username }: GithubStatsProps) {
+export function GithubStats({ username, variant = 'default' }: GithubStatsProps) {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -60,24 +54,41 @@ export function GithubStats({ username }: GithubStatsProps) {
   if (!mounted) {
     return (
         <section aria-labelledby="github-stats-heading" className="w-full">
-            <h3 id="github-stats-heading" className="text-2xl md:text-4xl font-bold mb-6 md:mb-12 uppercase flex items-center tracking-wide">
-                <span className="w-4 h-4 md:w-6 md:h-6 bg-primary mr-3 md:mr-6" aria-hidden="true"></span>
-                GitHub Activity
-            </h3>
-            <div className="w-full h-64 bg-gray-200 dark:bg-gray-800 animate-pulse rounded-sm" />
+            {variant === 'default' && (
+                <h3 id="github-stats-heading" className="text-2xl md:text-4xl font-bold mb-6 md:mb-12 uppercase flex items-center tracking-wide">
+                    <span className="w-4 h-4 md:w-6 md:h-6 bg-primary mr-3 md:mr-6" aria-hidden="true"></span>
+                    GitHub Activity
+                </h3>
+            )}
+            <div className="w-full h-32 bg-gray-200 dark:bg-gray-800 animate-pulse rounded-sm" />
         </section>
     ); 
   }
 
   const isDark = resolvedTheme === 'dark';
-  
-  // Theme configuration
-  // User requested themes for dark mode, default/standard for light
   const graphTheme = isDark ? 'merko' : 'default';
   const langTheme = isDark ? 'react' : 'default';
   const streakTheme = isDark ? 'black-ice' : 'default';
-  const statsTheme = isDark ? 'dark' : 'default';
   const calendarColor = '7C3AED'; 
+
+  if (variant === 'minimal') {
+    return (
+        <section className="w-full flex flex-col gap-4 opacity-80 hover:opacity-100 transition-opacity">
+            <h4 className="font-mono text-xs font-bold text-muted-foreground uppercase mb-1">Github Activity</h4>
+            <div className="flex flex-col gap-2">
+                <AsyncStatsImage
+                    src={`https://github-readme-streak-stats-eight.vercel.app/?user=${username}&hide_border=true&background=${isDark ? '1a1a1a' : 'ffffff'}&ring=${calendarColor}&fire=${calendarColor}&currStreakNum=${isDark ? 'ffffff' : '000000'}&currStreakLabel=${calendarColor}&sideNums=${isDark ? 'ffffff' : '000000'}&sideLabels=${isDark ? 'ffffff' : '000000'}&dates=${isDark ? 'd4d4d4' : '666666'}`}
+                    alt="GitHub Streak"
+                />
+                 <AsyncStatsImage
+                    src={`https://ghchart.rshah.org/${calendarColor}/${username}`} 
+                    alt={`${username}'s Github Contribution Chart`}
+                    displayBlock
+                />
+            </div>
+        </section>
+    )
+  }
 
   return (
     <section aria-labelledby="github-stats-heading" className="w-full">
@@ -160,7 +171,7 @@ export function GithubStats({ username }: GithubStatsProps) {
         >
              <div className="p-4 md:p-6 flex-grow flex items-center justify-center bg-surface w-full">
                 <AsyncStatsImage
-                  src={`https://github-readme-streak-stats.herokuapp.com/?user=${username}&theme=${streakTheme}&hide_border=true&date_format=M%20j%20Y&background=${isDark ? '1a1a1a' : 'ffffff'}&ring=${calendarColor}&currStreakLabel=${calendarColor}`}
+                  src={`https://github-readme-streak-stats-eight.vercel.app/?user=${username}&hide_border=true&background=${isDark ? '1a1a1a' : 'ffffff'}&ring=${calendarColor}&fire=${calendarColor}&currStreakNum=${isDark ? 'ffffff' : '000000'}&currStreakLabel=${calendarColor}&sideNums=${isDark ? 'ffffff' : '000000'}&sideLabels=${isDark ? 'ffffff' : '000000'}&dates=${isDark ? 'd4d4d4' : '666666'}`}
                   alt="GitHub Streak"
                 />
              </div>

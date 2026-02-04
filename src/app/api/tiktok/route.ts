@@ -11,9 +11,11 @@ export async function GET(request: Request) {
   }
 
   try {
-    const oembedUrl = `https://www.tiktok.com/oembed?url=${encodeURIComponent(url)}`;
+    // Try to normalize URL for OEmbed - TikTok often prefers /video/ over /photo/ for oembed
+    const normalizedUrl = url.replace('/photo/', '/video/');
+    const oembedUrl = `https://www.tiktok.com/oembed?url=${encodeURIComponent(normalizedUrl)}`;
     
-    // Parallel fetch: OEmbed for reliable metadata + HTML scrape for stats
+    // Parallel fetch: OEmbed for reliable metadata + HTML scrape for stats/fallback
     const [oembedRes, htmlText] = await Promise.all([
         fetch(oembedUrl),
         fetch(url, {
@@ -23,14 +25,17 @@ export async function GET(request: Request) {
         }).then(r => r.ok ? r.text() : '').catch(() => '')
     ]);
 
-    if (!oembedRes.ok) {
-       console.error(`TikTok OEmbed error: ${oembedRes.status} ${oembedRes.statusText}`);
-       return NextResponse.json({ error: 'Failed to fetch OEmbed data' }, { status: oembedRes.status });
+    let data: any = {};
+    let isOEmbedSuccess = false;
+
+    if (oembedRes.ok) {
+       data = await oembedRes.json();
+       isOEmbedSuccess = true;
+    } else {
+       console.warn(`TikTok OEmbed error for ${url}: ${oembedRes.status} ${oembedRes.statusText}`);
     }
-
-    const data = await oembedRes.json();
-
-    // Attempt to extract stats from HTML
+    
+    // Attempt to extract stats and metadata from HTML (fallback or enrichment)
     let stats = {
         viewCount: 0,
         likeCount: 0,
@@ -38,11 +43,32 @@ export async function GET(request: Request) {
         shareCount: 0
     };
 
-    try {
-        // Look for the hydration data
-        // Pattern: "stats":{..."diggCount":123,"shareCount":123,"commentCount":123,"playCount":123...}
-        // or separated fields. Regex is safest for simple extraction without full parsing.
+    // Helper to extract meta content
+    const getMeta = (prop: string) => {
+        const match = htmlText.match(new RegExp(`<meta property="${prop}" content="([^"]*)"`)) || 
+                      htmlText.match(new RegExp(`<meta name="${prop}" content="([^"]*)"`));
+        return match ? match[1] : null;
+    };
+    
+    // Fallback metadata if OEmbed failed
+    if (!isOEmbedSuccess) {
+        const ogTitle = getMeta('og:title') || '';
+        const ogImage = getMeta('og:image');
+        const ogDesc = getMeta('og:description');
         
+        // TikTok titles often look like "Creator (@user) on TikTok | Description"
+        // Or just "Description"
+        data = {
+            title: ogTitle.split(' | ')[0] || 'TikTok Video',
+            thumbnail_url: ogImage,
+            author_name: ogDesc?.split(' on TikTok')[0] || 'TikTok User',
+            provider_name: 'TikTok',
+            type: 'video',
+            html: '', // No embed HTML available easily without OEmbed
+        };
+    }
+
+    try {
         const diggCountMatch = htmlText.match(/"diggCount":(\d+)/);
         const shareCountMatch = htmlText.match(/"shareCount":(\d+)/);
         const commentCountMatch = htmlText.match(/"commentCount":(\d+)/);
@@ -55,6 +81,11 @@ export async function GET(request: Request) {
         
     } catch (e) {
         console.warn('Failed to parse TikTok stats from HTML', e);
+    }
+    
+    // If we have absolutely nothing, fail
+    if (!data.title && !data.thumbnail_url) {
+        return NextResponse.json({ error: 'Failed to fetch TikTok data' }, { status: 400 });
     }
 
     return NextResponse.json({ ...data, stats });

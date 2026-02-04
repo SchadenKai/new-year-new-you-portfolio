@@ -6,10 +6,11 @@ import { ExperienceCard } from "@/components/content/ExperienceCard";
 import { ProjectCard } from "@/components/content/ProjectCard";
 import { SkillCard } from "@/components/content/SkillCard";
 import { AchievementCard } from "@/components/content/AchievementCard";
-import { PostCard, DevToPost } from "@/components/content/PostCard";
-import { TikTokPostCard, TikTokOEmbed } from "@/components/content/TikTokPostCard";
+import { CompactOverlayCard } from "@/components/content/CompactOverlayCard";
+import { WritingsSection } from "@/components/content/WritingsSection";
+import { LeftColumn } from "@/components/content/LeftColumn";
+import { ExpandButton } from "@/components/ui/ExpandButton";
 
-import { GithubStats } from "@/components/content/GithubStats";
 import { Profile } from '@/types/profile';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -19,87 +20,39 @@ interface DynamicPortfolioProps {
 
 export function DynamicPortfolio({ profile }: DynamicPortfolioProps) {
   const { layoutOrder, highlightIds } = useLayoutStore();
-  const githubUsername = profile.basics.profiles?.find(p => p.network === "GitHub")?.username || "SchadenKai";
-
+  
   const isHighlighted = (id: string) => highlightIds.includes(id);
-
-  const [posts, setPosts] = React.useState<DevToPost[]>([]);
-  const [loadingPosts, setLoadingPosts] = React.useState(true);
-  const [postsExpanded, setPostsExpanded] = React.useState(false);
-
-  const [tiktokPosts, setTikTokPosts] = React.useState<{data: TikTokOEmbed | null, url: string}[]>([]);
-  const [loadingTikTok, setLoadingTikTok] = React.useState(true);
-  const [tiktokExpanded, setTikTokExpanded] = React.useState(false);
-
-  React.useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const res = await fetch('/api/posts');
-        if (res.ok) {
-           const data = await res.json();
-           if (Array.isArray(data)) {
-             setPosts(data);
-           }
-        }
-      } catch (error) {
-        console.error('Failed to fetch posts', error);
-      } finally {
-        setLoadingPosts(false);
-      }
-    };
-    fetchPosts();
-  }, []);
-
-  React.useEffect(() => {
-    const fetchTikTok = async () => {
-      if (!profile.tiktok || profile.tiktok.length === 0) {
-        setLoadingTikTok(false);
-        return;
-      }
-      
-      setLoadingTikTok(true);
-      try {
-        const results = await Promise.all(
-          profile.tiktok.map(async (url) => {
-            try {
-              const res = await fetch(`/api/tiktok?url=${encodeURIComponent(url)}`);
-              if (res.ok) {
-                const data = await res.json();
-                return { data, url };
-              }
-              return { data: null, url };
-            } catch (e) {
-              return { data: null, url };
-            }
-          })
-        );
-        setTikTokPosts(results.filter(item => item.data !== null));
-      } catch (error) {
-         console.error("Failed to fetch TikToks", error);
-      } finally {
-        setLoadingTikTok(false);
-      }
-    };
-    fetchTikTok();
-  }, [profile.tiktok]);
+  
+  const [achievementsExpanded, setAchievementsExpanded] = React.useState(false);
 
   const sections: Record<SectionName, React.ReactNode> = {
-    stats: (
+    about: (
       <motion.section
         layout
-        key="stats"
+        id="about"
+        key="about"
         className="mb-12 md:mb-24"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.3 }}
+        aria-labelledby="about-heading"
       >
-        <GithubStats username={githubUsername} />
+        <h3 id="about-heading" className="text-2xl md:text-4xl font-bold mb-6 md:mb-12 uppercase flex items-center tracking-wide">
+          <span className="w-4 h-4 md:w-6 md:h-6 bg-primary mr-3 md:mr-6" aria-hidden="true"></span>
+          About
+        </h3>
+        <div className="bg-surface border-2 border-border p-6 md:p-8 rounded-sm shadow-[4px_4px_0px_0px_var(--foreground)]">
+            <p className="text-lg md:text-xl leading-relaxed text-foreground font-medium">
+                {profile.basics.summary}
+            </p>
+        </div>
       </motion.section>
     ),
     experience: (
       <motion.section 
         layout
+        id="experience"
         key="experience" 
         className="mb-12 md:mb-24"
         initial={{ opacity: 0, y: 20 }}
@@ -112,7 +65,7 @@ export function DynamicPortfolio({ profile }: DynamicPortfolioProps) {
           <span className="w-4 h-4 md:w-6 md:h-6 bg-primary mr-3 md:mr-6" aria-hidden="true"></span>
           Experience
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+        <div className="grid grid-cols-1 gap-4 md:gap-8">
           {profile.work.map((work, index) => (
             <ExperienceCard 
                 key={index} 
@@ -126,6 +79,7 @@ export function DynamicPortfolio({ profile }: DynamicPortfolioProps) {
     projects: (
          <motion.section 
             layout
+            id="projects"
             key="projects" 
             className="mb-12 md:mb-24"
             initial={{ opacity: 0, y: 20 }}
@@ -138,7 +92,7 @@ export function DynamicPortfolio({ profile }: DynamicPortfolioProps) {
             <span className="w-4 h-4 md:w-6 md:h-6 bg-primary mr-3 md:mr-6" aria-hidden="true"></span>
             Selected Projects
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+            <div className="grid grid-cols-1 gap-4 md:gap-8">
             {profile.projects.map((project, index) => (
                 <ProjectCard 
                     key={index} 
@@ -152,6 +106,7 @@ export function DynamicPortfolio({ profile }: DynamicPortfolioProps) {
     skills: (
         <motion.section 
             layout
+            id="skills"
             key="skills" 
             className="mb-12 md:mb-24"
             initial={{ opacity: 0, y: 20 }}
@@ -164,7 +119,7 @@ export function DynamicPortfolio({ profile }: DynamicPortfolioProps) {
             <span className="w-4 h-4 md:w-6 md:h-6 bg-primary mr-3 md:mr-6" aria-hidden="true"></span>
             Technical Arsenal
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                 {profile.skills.map((skill, index) => (
                     <SkillCard 
                         key={index} 
@@ -178,6 +133,7 @@ export function DynamicPortfolio({ profile }: DynamicPortfolioProps) {
     achievements: (
         <motion.section 
             layout
+            id="achievements"
             key="achievements" 
             className="mb-12 md:mb-24"
             initial={{ opacity: 0, y: 20 }}
@@ -190,175 +146,78 @@ export function DynamicPortfolio({ profile }: DynamicPortfolioProps) {
             <span className="w-4 h-4 md:w-6 md:h-6 bg-primary mr-3 md:mr-6" aria-hidden="true"></span>
             Achievements
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-            {profile.achievements?.map((achievement, index) => (
-                <AchievementCard 
-                    key={index} 
-                    achievement={achievement} 
-                    isHighlighted={isHighlighted(`achievement-${index}`)}
-                />
-            ))}
-            </div>
-        </motion.section>
-    ),
-    posts: (
-        <motion.section 
-            layout
-            key="posts" 
-            className="mb-12 md:mb-24"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.3 }}
-            aria-labelledby="posts-heading"
-        >
-            <h3 id="posts-heading" className="text-2xl md:text-4xl font-bold mb-6 md:mb-12 uppercase flex items-center tracking-wide">
-            <span className="w-4 h-4 md:w-6 md:h-6 bg-primary mr-3 md:mr-6" aria-hidden="true"></span>
-            Recent Writings
-            </h3>
-            {loadingPosts ? (
-               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="h-64 bg-surface border-2 border-border animate-pulse rounded-sm" />
-                  ))}
-               </div>
-            ) : posts.length > 0 ? (
-
-               <div className="flex flex-col gap-6 md:gap-8">
-                 <motion.div 
-                    layout 
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8"
-                 >
+            
+            <div className="flex flex-col gap-8">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                     <AnimatePresence initial={false} mode="popLayout">
-                        {(postsExpanded ? posts : posts.slice(0, 3)).map((post) => (
+                        {(achievementsExpanded ? profile.achievements : profile.achievements?.slice(0, 6))?.map((achievement, index) => (
                             <motion.div
                                 layout
-                                key={post.id}
+                                key={index}
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.9 }}
-                                transition={{ duration: 0.3, type: "spring", stiffness: 300, damping: 25 }}
+                                transition={{ duration: 0.3 }}
                             >
-                                <PostCard 
-                                    post={post} 
-                                    isHighlighted={isHighlighted(`post-${post.id}`)}
+                                <CompactOverlayCard 
+                                    title={achievement.title}
+                                    subtitle={`@${achievement.event}`}
+                                    imageSrc={achievement.image}
+                                    type="award"
+                                    onClick={() => {}} // Could open a modal if needed, currently just static
                                 />
                             </motion.div>
                         ))}
                     </AnimatePresence>
-                 </motion.div>
-                 
-                 {posts.length > 3 && (
-                   <div className="flex justify-center">
-                     <button
-                       onClick={() => setPostsExpanded(!postsExpanded)}
-                       className="px-8 py-3 bg-primary text-white font-bold font-mono tracking-wider border-2 border-foreground shadow-[4px_4px_0px_0px_var(--foreground)] hover:translate-y-1 hover:shadow-none transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary items-center flex gap-2 rounded-sm"
-                       aria-expanded={postsExpanded}
-                     >
-                       {postsExpanded ? 'SHOW LESS' : 'VIEW ALL WRITINGS'}
-                       <motion.span 
-                          animate={{ rotate: postsExpanded ? 180 : 0 }}
-                          transition={{ duration: 0.3 }}
-                          aria-hidden="true"
-                          className="inline-block"
-                       >
-                         ↓
-                       </motion.span>
-                     </button>
-                   </div>
-                 )}
-               </div>
-            ) : (
-                <div className="p-6 border-2 border-border border-dashed text-center">
-                    <p className="text-muted-foreground font-mono">Loading posts failed or no posts found.</p>
                 </div>
-            )}
+
+                {profile.achievements && profile.achievements.length > 6 && (
+                     <div className="flex justify-center">
+                       <ExpandButton
+                         isExpanded={achievementsExpanded}
+                         onClick={() => setAchievementsExpanded(!achievementsExpanded)}
+                         labelMore="VIEW ALL ACHIEVEMENTS"
+                         labelLess="SHOW LESS"
+                       />
+                     </div>
+                )}
+            </div>
         </motion.section>
     ),
-    tiktok: (
-      <motion.section 
-          layout
-          id="tiktok"
-          key="tiktok" 
-          className="mb-12 md:mb-24"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.3 }}
-          aria-labelledby="tiktok-heading"
-      >
-          <h3 id="tiktok-heading" className="text-2xl md:text-4xl font-bold mb-6 md:mb-12 uppercase flex items-center tracking-wide">
-          <span className="w-4 h-4 md:w-6 md:h-6 bg-primary mr-3 md:mr-6" aria-hidden="true"></span>
-          TikTok Highlights
-          </h3>
-          {loadingTikTok ? (
-             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="h-64 bg-surface border-2 border-border animate-pulse rounded-sm" />
-                ))}
-             </div>
-          ) : tiktokPosts.length > 0 ? (
-
-             <div className="flex flex-col gap-6 md:gap-8">
-               <motion.div 
-                  layout 
-                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8"
-               >
-                  <AnimatePresence initial={false} mode="popLayout">
-                      {(tiktokExpanded ? tiktokPosts : tiktokPosts.slice(0, 3)).map((post, index) => (
-                          <motion.div
-                              layout
-                              key={post.url}
-                              initial={{ opacity: 0, scale: 0.9 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              exit={{ opacity: 0, scale: 0.9 }}
-                              transition={{ duration: 0.3, type: "spring", stiffness: 300, damping: 25 }}
-                          >
-                              <TikTokPostCard 
-                                  data={post.data}
-                                  url={post.url} 
-                                  isHighlighted={isHighlighted(`tiktok-${index}`)}
-                              />
-                          </motion.div>
-                      ))}
-                  </AnimatePresence>
-               </motion.div>
-               
-               {tiktokPosts.length > 3 && (
-                 <div className="flex justify-center">
-                   <button
-                     onClick={() => setTikTokExpanded(!tiktokExpanded)}
-                     className="px-8 py-3 bg-primary text-white font-bold font-mono tracking-wider border-2 border-foreground shadow-[4px_4px_0px_0px_var(--foreground)] hover:translate-y-1 hover:shadow-none transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary items-center flex gap-2 rounded-sm"
-                     aria-expanded={tiktokExpanded}
-                   >
-                     {tiktokExpanded ? 'SHOW LESS' : 'VIEW ALL TIKTOKS'}
-                     <motion.span 
-                        animate={{ rotate: tiktokExpanded ? 180 : 0 }}
-                        transition={{ duration: 0.3 }}
-                        aria-hidden="true"
-                        className="inline-block"
-                     >
-                       ↓
-                     </motion.span>
-                   </button>
-                 </div>
-               )}
-             </div>
-          ) : (
-              <div className="p-6 border-2 border-border border-dashed text-center">
-                  <p className="text-muted-foreground font-mono">No TikTok posts configured.</p>
-              </div>
-          )}
-      </motion.section>
+    writings: (
+        <motion.div
+           layout
+           key="writings"
+           initial={{ opacity: 0, y: 20 }}
+           animate={{ opacity: 1, y: 0 }}
+           exit={{ opacity: 0, y: 20 }}
+           transition={{ duration: 0.3 }}
+        >
+            <WritingsSection profile={profile} />
+        </motion.div>
     )
 
   };
 
   return (
-    <div className="flex flex-col">
-         <AnimatePresence mode="popLayout">
-            {layoutOrder.map(section => sections[section])}
-         </AnimatePresence>
+    <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 relative">
+         {/* Left Column - Fixed on Desktop */}
+         <aside className="lg:w-1/3 lg:min-w-[400px] relative">
+            <LeftColumn profile={profile} />
+         </aside>
+
+         {/* Right Column - Scrollable Content */}
+         <main className="lg:w-2/3 py-6 md:py-12 lg:py-0">
+             <div className="lg:pt-24 lg:pb-32">
+                <AnimatePresence mode="popLayout">
+                    {layoutOrder.map(section => sections[section])}
+                </AnimatePresence>
+                
+                <footer className="border-t-2 border-border pt-6 md:pt-8 text-center lg:text-left text-muted-foreground font-mono text-xs md:text-sm font-bold mt-12 md:mt-20">
+                    <p>© {new Date().getFullYear()} {profile.basics.name}. Deployed on Google Cloud Run.</p>
+                </footer>
+             </div>
+         </main>
     </div>
   );
 }
